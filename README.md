@@ -213,11 +213,11 @@ public class Car {
 
 
 - #### 메서드에 “언제” 로직을 주입하느냐에 따른 AoP annotation
-    1. @Before : 대상 메서드가 실행되기 전에 Advice를 실행
-    2. @After : 대상 메소드 실행 후 Advice를 실행 (성공적으로 실행되었든, exception을 던지든 상관없이 실행된다)
-    3. @Around : 대상 메서드 실행 전, 후 또는 예외 발생 시에 Advice를 실행
-    4. @AfterReturning : 대상 메서드가 “정상적으로 실행”되고 난 뒤 Advice를 실행 (exception 발생했을 때는 수행하지 않음)
-    5. @AfterThrowing : 대상 메서드에 예외가 발생했을 때 Advice를 실행
+     @Before : 대상 메서드가 실행되기 전에 Advice를 실행
+     @After : 대상 메소드 실행 후 Advice를 실행 (성공적으로 실행되었든, exception을 던지든 상관없이 실행된다)
+     @Around : 대상 메서드 실행 전, 후 또는 예외 발생 시에 Advice를 실행
+     @AfterReturning : 대상 메서드가 “정상적으로 실행”되고 난 뒤 Advice를 실행 (exception 발생했을 때는 수행하지 않음)
+     @AfterThrowing : 대상 메서드에 예외가 발생했을 때 Advice를 실행
 
 ---
 # PSA
@@ -299,7 +299,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 
 ---
 
-## Spring Annotation
+# Spring Annotation
 
 **1. 어노테이션이란?**
 
