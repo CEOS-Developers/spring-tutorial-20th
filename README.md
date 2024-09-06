@@ -168,20 +168,20 @@ public class Car {
 
 - 횡단 관심사를 Aspect라는 단위로 분리하고, 애플리케이션의 특정 지점(JoinPoint)에 적용하여 소스 코드의 중복을 줄인다
   - 주요 용어
-     1. Aspect : Advice + Pointcut으로, AoP에서 횡단관심사를 aspect로 모듈화
+     - Aspect : Advice + Pointcut으로, AoP에서 횡단관심사를 aspect로 모듈화
 
         언제 어디서 무엇을 할 지 명시되어 있다
 
-     2. Advice : Target에 제공할 부가 작업을 담고 있는 모듈 (Aspect가 해야 하는 “작업”)
-     3. Target : Advice가 적용될 객체
-     4. Join Point : Advice를 적용할 수 있는 지점들 (method진입시점, 생성자 호출 시점 등 target 객체가 구현한 인터페이스의 모든 메서드)
-     5. Pointcut : JoinPoint 중 Advice가 적용되는 지점을 결정
+     - Advice : Target에 제공할 부가 작업을 담고 있는 모듈 (Aspect가 해야 하는 “작업”)
+     -  Target : Advice가 적용될 객체
+     - Join Point : Advice를 적용할 수 있는 지점들 (method진입시점, 생성자 호출 시점 등 target 객체가 구현한 인터페이스의 모든 메서드)
+     - Pointcut : JoinPoint 중 Advice가 적용되는 지점을 결정
 
 
 - #### 스프링이 제공하는 AoP 방법
-    1. @Asepct 어노테이션을 붙여 Aspect를 나타내는 클래스임을 명시 + @Component 어노테이션으로 빈으로 등록하기
-    2. Pointcut 설정 (”execution(* 패키지명.interface명.메소드명)”)
-    3. Advice 설정
+    - @Asepct 어노테이션을 붙여 Aspect를 나타내는 클래스임을 명시 + @Component 어노테이션으로 빈으로 등록하기
+    - Pointcut 설정 (”execution(* 패키지명.interface명.메소드명)”)
+    - Advice 설정
 
 
   ex) com.exmaple.demo 패키지 하위에 있는 메소드 실행시간 체크하기
