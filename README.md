@@ -354,7 +354,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
     
    ---
 
-   **스프링 빈 등록방법**
+   ## 스프링 빈 등록방법
 
 1. 빈을 수동으로 등록 - @Bean 과 @Configuration 이용하기
 
