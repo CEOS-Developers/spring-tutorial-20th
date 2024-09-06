@@ -214,9 +214,13 @@ public class Car {
 
 - #### 메서드에 “언제” 로직을 주입하느냐에 따른 AoP annotation
      @Before : 대상 메서드가 실행되기 전에 Advice를 실행
+  
      @After : 대상 메소드 실행 후 Advice를 실행 (성공적으로 실행되었든, exception을 던지든 상관없이 실행된다)
+  
      @Around : 대상 메서드 실행 전, 후 또는 예외 발생 시에 Advice를 실행
+  
      @AfterReturning : 대상 메서드가 “정상적으로 실행”되고 난 뒤 Advice를 실행 (exception 발생했을 때는 수행하지 않음)
+  
      @AfterThrowing : 대상 메서드에 예외가 발생했을 때 Advice를 실행
 
 ---
@@ -402,7 +406,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
         - @Component는 클래스에 사용하고, 개발자가 직접 변경이 가능한 대상에 사용
 ---
 
-   ### 컴포넌트 스캔의 동작과정
+   ## 컴포넌트 스캔의 동작과정
 
    **@ComponentScan이란**
 
@@ -474,15 +478,15 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 
     ---
 
-   ## 테스트
+   # 테스트
 
-   ### 단위 테스트
+   ## 단위 테스트
 
    소프트웨어의 개별 구성 요소 또는 모듈이 예상대로 작동하는지 검증하는 과정이다. 주로 메서드, 클래스와 같은 소프트웨어의 가장 작은 테스트 가능한 부분에 대한 테스트를 진행한다.
 
    개별 기능을 검증하는 것에 초점을 맞춘다.
 
-   ### 통합 테스트
+   ## 통합 테스트
 
    소프트웨어의 개별 구성 요소들이 모여 전체 시스템에서 올바르게 동작하는지 검증하는 테스트 방법이다. 모듈이 서로 통합되어 상호작용할 때 발생할 수 있는 문제를 찾아내고 해결하는데 중점을 둔다.
 
