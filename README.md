@@ -465,9 +465,9 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 
     ex) Ignore라는 어노테이션이 붙인 빈들은 스캔에 포함시키지 않으려면 아래와 같이 필터링 할 수 있다.
 
-    '''
-    @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Ignore.class))
-    '''
+    
+    	@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Ignore.class))
+    
 
    **@ComponentScan 동작과정**
 
