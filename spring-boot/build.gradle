@@ -19,8 +19,17 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // ----- 새롭게 추가한 부분
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // h2 database
+    runtimeOnly 'com.h2database:h2'
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
