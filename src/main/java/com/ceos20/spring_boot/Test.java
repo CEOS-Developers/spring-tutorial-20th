@@ -1,3 +1,5 @@
+package com.ceos20.spring_boot;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
