@@ -97,7 +97,7 @@ public class Car {
 
   2. Setter 주입
 
-    ```
+    
     public class Car {
     
     	Tire tire;
@@ -107,7 +107,7 @@ public class Car {
     	}
     
     }
-    ```
+    
 
     ```
     Tire tire = new KoreaTire();
@@ -219,7 +219,7 @@ public class Car {
     4. @AfterReturning : 대상 메서드가 “정상적으로 실행”되고 난 뒤 Advice를 실행 (exception 발생했을 때는 수행하지 않음)
     5. @AfterThrowing : 대상 메서드에 예외가 발생했을 때 Advice를 실행
 
----s
+---
 # PSA
 
 - 다양한 기술들을 인터페이스를 이용해 추상화하여 개발자가 일관된 방식으로 코드를 작성할 수 있도록 하는 추상화 구조
