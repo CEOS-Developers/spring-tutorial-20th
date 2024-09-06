@@ -1,10 +1,9 @@
 # spring-tutorial-20th
 CEOS 20th BE Study - Spring Tutorial
 
+---
 
 ## tutorial 을 하면서 발생한 issues ...
-
----
 
 ### 1. 개발 환경 세팅
 - IDE 설치 : **IntelliJ IDEA** / Eclipse IDE / VSCode
@@ -52,11 +51,10 @@ public class Test {
     private String name;
 }
 ```
-<br/>
+---
 
 ## spring이 지원하는 기술들(IoC/DI, AOP, PSA 등)
 
----
 ### _스프링은 왜 만들어졌는가?_ <br/>
 > Java 기반의 프레임워크로, 좋은 **객체 지향** 어플리케이션을 개발할 수 있도록 만들어졌습니다. <br/>
 > -- 추상화, 캡슐화, 상속, **다형성**
@@ -168,9 +166,9 @@ public User post(@RequestBody User user) {
 DB에 접근하기 위해 jdbc를 이용할 수도 있고, ORM을 이용할 수도 있는데 모든 경우에서 `@Transactional` 어노테이션에 대한 기능은 유지됩니다.
 이렇게 하나의 추상화로 여러가지 서비스를 모두 사용 가능하도록 한 것을 **Portable Service Abstraction**이라고 합니다.
 
+---
 ## Spring Bean / Bean 의 라이프사이클
 
----
 ### 1. Spring Bean
 > Bean은 스프링 컨테이너가 관리하는 재사용 가능한 자바 객체
 
@@ -211,9 +209,10 @@ Spring Boot를 자동으로 실행시켜주는 어노테이션
 ### @ComponentScan
 `@Component`, `@Service`, `@Repository`, `@Controller`, `@Configuration`이 붙은 빈들을 찾아 Context에 빈을 등록해주는 어노테이션
 
+---
+
 ## 단위 테스트와 통합 테스트
 
----
 ### 1. 단위 테스트
 소프트웨어 개발 과정에서 가장 작은 단위의 코드(함수, 메소드 등)를 대상으로 하는 테스트<br/>
 각 단위가 개별적으로 정상적으로 동작하는지 확인하고자 하는 목적을 가집니다.
