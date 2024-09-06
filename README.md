@@ -246,7 +246,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 스프링 컨테이너 생성 → Bean의 생성 → 의존성 주입 → 초기화 콜백 → Bean의 사용 → 소멸 전 콜백 → 스프링 종료
 
 - #### 빈 생명주기 콜백 관리 방법은 3가지
-    1. 인터페이스 (InitializaingBean, DisposableBean 이용)
+    - 인터페이스 (InitializaingBean, DisposableBean 이용)
 
     ```
     public class ExampleBean implements InitializingBean, DisposableBean {
@@ -262,7 +262,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
     
     ```
 
-  2. 설정 정보에 초기화 메소드, 종료 메소드 지정
+  - 설정 정보에 초기화 메소드, 종료 메소드 지정
 
     ```
     public class ExampleBean {
@@ -284,7 +284,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
     
     ```
 
-  3. **@PostConstruct, @PreDestroy 어노테이션 사용** → 가장 권장되는 방법!
+  - **@PostConstruct, @PreDestroy 어노테이션 사용** → 가장 권장되는 방법!
 
     ```
     public class ExampleBean {   
