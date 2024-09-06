@@ -5,7 +5,6 @@ CEOS 20th BE Study - Spring Tutorial
 
 ## 1. Spring이 지원하는 기술들
 
----
 ### 1.1. IoC (Inversion of Control)
 > `IoC (Inversion of Control)` : **제어의 역전** (제어의 흐름을 바꾼다)
 
@@ -150,7 +149,6 @@ public class MemberController {
 
 ## 2. Spring Bean 과 Bean 의 라이프사이클
 
----
 ### 2.1. Spring Bean 이란?
 `스프링 컨테이너` 가 생성하고 관리하는 객체이다. 알기 쉽게 `스프링의 객체` 라고 생각하자.
 `스프링 빈`은 `싱글톤`으로 관리되며 XML 설정 파일, 어노테이션 (`@Component`, `@Service`, `@Repository`, `@Controller` 등), 자바 설정 클래스 (`@Configuration`과 `@Bean` 사용) 를 통해 정의된다. 
@@ -175,7 +173,6 @@ public class MemberController {
 
 ## 3. 스프링 어노테이션
 
----
 ### 3.1. 어노테이션의 정의와 Java에서의 구현 방법
 > `어노테이션(@, annotation)` : 코드에 대한 부가적인 정보를 제공하는 특수한 형태의 표기
 
@@ -230,7 +227,6 @@ public class AppConfig {
 
 ## 4. 단위 테스트와 통합 테스트 탐구
 
----
 ### 4.1. 단위 테스트 (Unit Test)
 개별 클래스나 메서드와 같은 작은 단위의 동작을 검증하는 테스트이다. 주로 비즈니스 로직이나 특정 메소드의 동작을 검증하는 데 사용된다.
 
