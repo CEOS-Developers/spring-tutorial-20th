@@ -109,13 +109,13 @@ public class Car {
     }
     
 
-    ```
+    
     Tire tire = new KoreaTire();
     
     Car car = new Car();
     
     car.setTire(tire); // setter 주입
-    ```
+    
 
 → setter 에서 tire 를 받아서 tire 필드를 설정
 
@@ -299,7 +299,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 
 ---
 
-### Spring Annotation
+## Spring Annotation
 
 **1. 어노테이션이란?**
 
