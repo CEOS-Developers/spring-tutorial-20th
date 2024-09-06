@@ -555,3 +555,478 @@ Spring Container는 이런 빈 객체의 생명주기를 컨테이너의 생명�
 >
 > https://velog.io/@hosunghan0821/Spring-Spring-bean-life-cycle
 >
+## 4️⃣ 스프링 어노테이션을 심층 분석해요
+
+- 어노테이션이란 무엇이며, Java에서 어떻게 구현될까요?
+- 스프링에서 어노테이션을 통해 Bean을 등록할 때, 어떤 일련의 과정이 일어나는지 탐구해보세요.
+- `@ComponentScan` 과 같은 어노테이션을 사용하여 스프링이 컴포넌트를 어떻게 탐색하고 찾는지의 과정을 깊게 파헤쳐보세요.
+
+---
+
+### 스프링 어노테이션이란?
+
+**자바 어노테이션(Java Annotation)**은 자바 소스 코드에 추가하여 사용할 수 있는 **메타데이터의 일종**이다. 보통 `@` 기호를 앞에 붙여서 사용한다. JDK 1.5 버전 이상에서 사용 가능하다. 자바 애너테이션은 클래스 파일에 임베디드되어 컴파일러에 의해 생성된 후 자바 가상머신에 포함되어 작동한다. - 위키백과
+
+중요한 내용은 `메타 데이터의 일종이다.` 라는 구문이다. `@`를 붙이는 것으로 해당 클래스, 메서드, 필드에게 메타 데이터를 추가하고, 어떠한 기술을 통해 원하는 동작을 수행시키는 것이 Spring에서 하는 일이다.
+
+### 스프링 빈 등록
+
+아래 어노테이션들은 Spring에서 사용되는 컴포넌트인 `Bean`과 관련된 어노테이션들이다.
+
+### `@Bean`
+
+이름과 같이 Bean을 등록하는 어노테이션이다. 해당 어노테이션의 docs를 보면 다음과 같이 작성되어 있다.
+
+> Indicates that a method produces a bean to be managed by the Spring container.
+>
+
+`@Bean`은 아래 다른 어노테이션과 다르게 메서드에 붙여서 Bean을 등록한다. Bean은 기본적으론 메서드의 이름을 `camel case`로 변경한 id로 등록이 되지만 name을 입력하면 그 값으로 등록된다.
+
+```java
+@Bean
+public MemberService memberService(MemberRepository memberRepository){
+    return new MemberServiceImpl(memberRepository());
+}
+
+@Bean(name="jdbcMemberRepository")
+public MemberRepository memberRepository(){
+    return new JDBCMemberRepository();
+}
+
+@Bean
+public MemberRepository jpaMemberRepository(){
+    return new JpaMemberRepository();
+}
+```
+
+### `@Component`
+
+컴포넌트 스캔을 통해서 감지되어 자동으로 Bean이 등록될 후보 클래스를 명시한다. 앞서 언급한 것처럼 Method가 아닌 Class단위에 붙이는 어노테이션이다. 아래 등장하는 `@Controller` 부터 `@Configuration` 까지는 전부 내부에 `@Component` 어노테이션을 가지고 있어, 컴포넌트 스캔의 대상이 된다.
+
+```java
+@Component
+public class MemberServiceImpl implements MemberService{
+}
+```
+
+### `@Controller` `@RestController`
+
+Spring에서 이용될 Controller를 명시하는 어노테이션이다. 아래 등장할 @RequestMapping과 같이 매핑할 URL을 통해 요청을 받는다. `@Controller` VIEW를 리턴하는데, `@ResponseBody` 어노테이션을 붙인다면, Body에 다른 값을 담을 수 있다. `@RestController`는 `@Controller` + `@ResponseBody`이다.
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Controller
+@ResponseBody
+public @interface RestController {
+...
+}
+```
+
+### `@ControllerAdvice` `@RestControllerAdvice`
+
+아래 Docs의 내용을 살펴보면, Controller 클래스들에게 선언된 `@ExceptionHandler`, `@InitBinder`, `@ModelAttribute`를 공유한다고 한다.
+
+> Specialization of @Component for classes that declare @ExceptionHandler, @InitBinder, or @ModelAttribute methods to be shared across multiple @Controller classes.
+>
+
+`@ExceptionHandler`와 `@ModelAttribute`는 아래에서 다루니 이 부분에서 설명은 생략한다.
+
+`@InitBinder` 어노테이션은 Controller에 들어오는 요청에 대한 추가 설정을 하는 것이다. 특히 `WebDataBinder`에 대한 설정을 할 수 있다. WebDataBinder와 @InitBinder에 대한 자세한 정보는 [이 블로그](https://joont92.github.io/spring/%EB%AA%A8%EB%8D%B8-%EB%B0%94%EC%9D%B8%EB%94%A9%EA%B3%BC-%EA%B2%80%EC%A6%9D/)에서 확인 가능하다.
+
+주로 사용하는 것은 `@ExceptionHandler`와 관련된 처리를 하며, 이름에서 알 수 있듯이 `@RestControllerAdvice`는 `@ControllerAdvice`와 `@ResponseBody`가 합쳐진 것이다.
+
+### `@Service`
+
+Spring에서 비즈니스 로직을 처리하는 계층에 붙이는 어노테이션이다.
+
+### `@Repository`
+
+Spring에서 DB관련 로직을 처리하는 계층에 붙이는 어노테이션이다.
+
+### `@Configuration`
+
+`@Bean` 을 붙인 메서드들을 Bean으로 등록할 수 있는 어노테이션이다.
+
+아래 내용은 Spring Docs에 작성된 내용으로, `@Configuration`의 주된 목적은 Bean을 정의하는 것이라고 한다.
+
+> Annotating a class with @Configuration indicates that its primary purpose is as a source of bean definitions.
+>
+
+### 스프링 컴포넌트 탐색
+
+### 1. @ComponentScan
+
+![img_3.png](img_3.png)
+
+- `@ComponentScan` 은 `@Component` 가 붙은 모든 클래스를 스프링 빈으로 등록한다.
+- 이때 스프링 빈의 기본 이름은 클래스명을 사용하되 맨 앞글자만 소문자를 사용한다.
+    - **빈 이름 기본 전략**: MemberServiceImpl 클래스 → memberServiceImpl
+    - **빈 이름 직접 지정**: 만약 스프링 빈의 이름을 직접 지정하고 싶으면 `@Component("memberService2")` 이런식으로 이름을 부여하면 된다.
+    - 대부분 기본 이름을 사용하고, 특수한 경우에만 빈 이름을 직접 지정하는 것이 좋다!
+
+### 2. @Autowired 의존관계 자동 주입
+
+![img_4.png](img_4.png)
+
+- **생성자에 `@Autowired` 를 지정**하면, 스프링 컨테이너가 **자동으로 해당 스프링 빈을 찾아서 주입한다.**
+- 이때 기본 조회 전략은 **타입이 같은 빈**을 찾아서 주입한다.
+    - `getBean(MemberRepository.class)` 와 동일하다고 이해하면 된다.
+    - 더 자세한 내용은 뒤에서 설명한다.
+
+![img_5.png](img_5.png)
+
+- 생성자에 파라미터가 많아도 다 찾아서 자동으로 주입한다.
+
+## 탐색 위치와 기본 스캔 대상
+
+### 탐색할 패키지의 시작 위치 지정
+
+모든 자바 클래스를 다 컴포넌트 스캔하면 시간이 오래 걸린다. 그래서 꼭 필요한 위치부터 탐색하도록 시작 위치를 지정할 수 있다.
+
+```java
+@ComponentScan(
+		basePackages = "hello.core",
+)
+```
+
+- `basePackages` : 탐색할 패키지의 시작 위치를 지정한다. 이 패키지를 포함해서 하위 패키지를 모두 탐색한다.
+    - 만약 이런 시작 위치를 지정하지 않으면 모든 라이브러리를 포함하여 컴포넌트를 스캔하기 때문에,
+    - `basePackages = {"hello.core", "hello.service"}` 이렇게 여러 시작 위치를 지정할 수도있다.
+- `basePackageClasses` : 지정한 클래스의 패키지를 탐색 시작 위치로 지정한다.
+    - 만약 지정하지 않으면 **`@ComponentScan` 이 붙은 설정 정보 클래스의 패키지가 시작 위치**가 된다.
+
+**권장하는 방법**
+
+개인적으로 즐겨 사용하는 방법은 패키지 위치를 지정하지 않고, **설정 정보 클래스의 위치를 나의 프로젝트 최상단**에 두는 것이다. 최근 스프링 부트도 이 방법을 기본으로 제공한다.
+
+예를 들어서 프로젝트가 다음과 같이 구조가 되어 있으면
+
+- `com.hello`
+    - `com.hello.serivce`
+    - `com.hello.repository`
+
+`com.hello` → 프로젝트 시작 루트, 여기에 `AppConfig` 같은 메인 설정 정보를 두고, `@ComponentScan` 애노테이션을 붙이고, `basePackages` 지정은 생략한다.
+
+이렇게 하면 com.hello 를 포함한 **하위는 모두 자동으로 컴포넌트 스캔의 대상**이 된다. 그리고 프로젝트 메인 설정 정보는 프로젝트를 대표하는 정보이기 때문에 **프로젝트 시작 루트 위치**에 두는 것이 좋다 생각한다.
+
+참고로 스프링 부트를 사용하면 스프링 부트의 대표 시작 정보인 `@SpringBootApplication` 를 **이 프로젝트 시작 루트 위치에 두는 것이 관례이다. (그리고 이 설정안에 바로 `@ComponentScan` 이 들어있다!)**
+
+```java
+@SpringBootApplication
+public class CoreApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CoreApplication.class, args);
+	}
+}
+```
+
+### 컴포넌트 스캔 기본 대상
+
+컴포넌트 스캔은 @Component 뿐만 아니라 다음과 내용도 추가로 대상에 포함한다.
+
+- `@Component` : 컴포넌트 스캔에서 사용
+- `@Controller` : 스프링 MVC 컨트롤러에서 사용
+- `@Service` : 스프링 비즈니스 로직에서 사용
+- `@Repository` : 스프링 데이터 접근 계층에서 사용
+- `@Configuration` : 스프링 설정 정보에서 사용
+
+### 자주 사용하는 어노테이션 정리
+
+## 요청/응답
+
+아래 설명할 어노테이션들은 요청, 응답 시 사용되는 어노테이션들이다. 대체로 `@Controller`, `@RestController` 내부에서 사용되는 경우가 많다.
+
+### URL Mapping
+
+### `@RequestMapping`
+
+요청에 대한 URL을 매핑하는 어노테이션이다. 다음과 같이 URL을 매핑할 수 있다. 아무것도 입력하지 않으면 모든 메서드에 대한 요청을 받는다. 두 번째 메서드(`hi()`)처럼 HTTP 메서드를 지정하면, 해당 메서드에 대한 응답만을 받을 수 있다.
+
+```java
+@RequestMapping("/hello")
+public String hello(){
+    return "hello?";
+}
+
+@RequestMapping(value = "/hi", method = RequestMethod.GET)
+public String hi(){
+    return "hi?";
+}
+```
+
+`@RequestMapping`은 클래스 레벨에도 적용이 가능한 메서드이기 때문에, prefix가 있는 url의 경우 클래스 부분에 선언하면 쉽게 처리할 수 있다.
+
+아래 코드에서 `member()`의 실제 url은 `/member/get`이 된다.
+
+```java
+@RequestMapping("/member")
+@RestController
+public class MemberController {
+    @GetMapping("/get") // 실제 url은 /member/get
+    public String member(){
+        return "나는 멤버";
+    }
+}
+```
+
+아래 어노테이션들은 위에서 보여준 `@RequestMapping`의 HTTP 메서드 명시 부분을 미리 선언한 어노테이션들이다. `@RequestMapping`를 사용하는 것보다 아래 어노테이션들을 사용하는 것을 더 추천한다.
+
+`@GetMapping` `@PostMapping` `@PutMapping` `@PatchMapping` `@DeleteMapping`
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@RequestMapping(method = RequestMethod.GET)
+public @interface GetMapping {
+}
+```
+
+### 요청
+
+아래 있는 어노테이션은 컨트롤러에서 요청을 받을 때 사용된다.
+
+### `@RequestParam`
+
+QueryString과 x-www-form-urlencoded에 관한 요청을 받는다.
+
+아래 코드는 `/hello?name=...&age=...` 에 대한 요청을 받는 코드이다. 본래 Servlet에서는 Parameter가 String으로 넘어오지만, Spring에서 기본으로 설정해 주는 부분으로 인해 String, int와 같은 변수는 별도의 설정 없이 타입이 변환된다. 받겠다고 선언한 파라미터가 없을 경우 예외가 발생하며, `required=false`를 설정해 주면 예외가 발생하지 않는다.
+
+```java
+@GetMapping("/hello") // queryString
+public void hello(@RequestParam("name") String name, @RequestParam("age") int age){
+ ...
+}
+
+@PostMapping("/login") // x-www-form-urlencoded
+public void login(@RequestParam String id, @RequestParam String password){
+ ...
+}
+```
+
+### `@RequestBody`
+
+Body에 대한 요청을 처리한다. 일반적으로 Spring에서는 application/json에 대한 요청을 객체화시켜 주는 작업을 한다. 아래와 같이 Map 혹은 Java 객체로 받을 변환이 된다. 찾아보니 이는 Spring이 Jackson 라이브러리를 이용하기 때문에 json 요청을 객체로 변환시킬 수 있는 것이고, 다른 라이브러리를 이용하면 JSON이 아닌 다른 타입으로 받을 수 있다고 한다. 더 자세한 내용이 궁금하다면 이 [블로그](https://kkangdda.tistory.com/37)를 참고하길 바란다.
+
+```java
+    @PostMapping(value = "/post")
+    public Map<String, Object> post(@RequestBody Map<String, Object> dto) {
+        ...
+    }
+    @PostMapping(value = "/post")
+    public Map<String, Object> post(@RequestBody RequestDto dto) {
+        ...
+    }
+```
+
+### `@RequestHeader`
+
+요청에서 들어온 Header의 값을 전달받는다. 아래와 같은 형태로 이용한다.
+
+```java
+    @PostMapping(value = "/header")
+    public Map<String, Object> post(@RequestHeader("EX-HEADER") String header){
+        ...
+    }
+```
+
+### `@PathVariable`
+
+URL에 변수를 이용할 수 있게 해 준다. 아래와 같이 사용할 수 있다. PathVariable은 검색을 하면서도 굉장히 자주 볼 수 있는 부분이기 때문에, 이해하기 가장 쉬울 것 같다.
+
+```java
+    @GetMapping("/{memberId}")
+    public String pv(@PathVariable("memberId") String memberId) {
+     ...
+    }
+```
+
+### `@RequestPart`
+
+`multipart/form-data`의 데이터를 받는 데 특화된 어노테이션이다. 여러 개의 데이터가 서로 다른 타입으로 들어올 때 이용가능하다. 아래 예시 코드처럼 회원가입을 한다고 할 때 입력한 정보와 프로필 사진을 동시에 보내고 싶을 때 이용가능하다.
+
+```java
+    @PostMapping("/multipart")
+    public void signUp(@RequestPart("userInfo") UserInfo userInfo, @RequestPart("profileImg")
+            MultipartFile multipartFile) {
+
+    }
+```
+
+### `@ModelAttribute`
+
+`Spring MVC` 이용한다면 자주 사용할 어노테이션으로 요청으로부터 받은 값을 객체로 변환하여 주고, 그 객체를 `Model`에 담아준다. 이 `Model`은 RequestScope에 담기기 때문에, Forward를 한 경우엔 `HttpServletRequest`에서 꺼내줘야 한다. (`Model`에 담을 경우 템플릿 엔진에서 이용가능하다.)
+
+```java
+    @PostMapping("/item")
+    public String registerItem(@ModelAttribute Item item){
+        ...
+    }
+```
+
+### 응답 시 사용
+
+### `@ResponseBody`
+
+응답을 할 때, Body에 데이터가 담긴다는 것을 명시한다. 사용하지 않을 경우, Spring에선 html 혹은 JSP, Thymeleaf와 같은 템플릿 엔진의 파일의 주소로 인식하여, 그 파일을 반환하려 한다.
+
+### `@ResponseStatus`
+
+응답을 할 때, 응답 코드를 설정한다. 아래와 같이 사용할 수 있다.
+
+```java
+    @PostMapping(value = "/post")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map<String, Object> post(@RequestBody Map<String, Object> dto) {
+        ...
+    }
+```
+
+> ResponseEntity라는 클래스를 리턴하는 경우에도, 응답코드를 설정할 수 있다. @ResponseStatus와 ResponseEntity가 동시에 있는 경우엔 ResponseEntity에 설정된 응답 코드가 적용된다.
+>
+
+# ETC
+
+### `@Autowired`
+
+의존성을 주입해 주는 어노테이션이다. Spring에서 의존성을 주입하는 방법은 3가지가 있는데, 필드 주입, setter주입, 생성자 주입에서 사용된다.
+
+**필드 주입**
+
+필드에 직접 `@Autowired` 어노테이션을 붙인다.
+
+```java
+@RestController
+public class MemberController {
+
+    @Autowired
+    private MemberService memberService;
+         ...
+}
+```
+
+**setter 주입**
+
+setter 메서드에 `@Autowired` 어노테이션을 붙인다. 런타임에서 의존성을 변경할 수 있다는 장점이 있다고 하는데, 그럴 일은 거의 없다고 한다.
+
+```java
+@RestController
+public class MemberController {
+
+    private MemberService memberService;
+
+    @Autowired
+    public void setMemberService(MemberService memberService){
+        this.memberService = memberService;
+    }
+    ...
+}
+```
+
+**생성자 주입**
+
+가장 많이 사용하는 방법인 생성자 주입이다. 그리고 이 방법을 가장 권장한다. 생성자 위에 `@Autowired`를 붙여준다. 생성자가 하나밖에 없을 경우, 그 생성자 기준으로 의존성 주입이 일어난다고 한다.
+
+```java
+@RestController
+public class MemberController {
+
+    private MemberService memberService;
+
+    @Autowired
+    public MemberController(MemberService memberService){
+        this.memberService = memberService;
+    }
+}
+```
+
+### `@ExceptionHandler`
+
+명시한 예외가 들어올 경우, 그에 대한 처리를 해주는 어노테이션이다. 아래와 같은 형태로 주로 사용한다. 어떤 예외를 처리할 것인지에 대해서 명시하고, 그에 해당하는 작업을 처리한다.
+
+```java
+@ExceptionHandler(JsonParseException.class)
+    public ResponseEntity<ErrorResponse> handleJsonParseException(HttpServletRequest request) {
+        ...
+    }
+```
+
+### `@Value`
+
+설정 파일(`.properties`, `.yml`)에 입력된 값을 변수에 담을 수 있다.
+
+```java
+    @Value("${key.kakao}")
+    private String key;
+```
+
+> Reference
+>
+>
+> [https://velog.io/@kgh2120/Spring의-유용한-어노테이션-정리](https://velog.io/@kgh2120/Spring%EC%9D%98-%EC%9C%A0%EC%9A%A9%ED%95%9C-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98-%EC%A0%95%EB%A6%AC)
+>
+
+### @RestController 와 @Controller의 차이점?
+
+근본적인 차이점은 `@Controller`의 역할은 Model 객체를 만들어 데이터를 담고 View를 찾는 것이지만, `@RestController`는 단순히 객체만을 반환하고 객체 데이터는 JSON 또는 XML 형식으로 HTTP 응답에 담아서 전송한다. 물론 `@Controller`와 `@ResponseBody`를 사용하여 만들 수 있지만 이러한 방식은 **RESTful 웹서비스의 기본 동작**이기 때문에 Spring은 `@Controller`와 `@ResponseBody`의 동작을 조합한 `@RestController`을 도입했다.
+
+```java
+@Controller
+@ResponseBody
+public class MVCController{
+	logic...
+}
+ 
+@RestController
+public class ReftFulController{
+	logic...
+}
+```
+
+- **RESTful API란?**
+
+  REST를 기반으로 만들어진 API를 의미한다.
+
+  이때 REST(Representational State Transfer)는 **자원을 이름으로 구분**하여 해당 자원의 상태를 주고받는 모든 것을 의미하게 된다.
+
+    - **REST란**
+        1. HTTP URI(Uniform Resource Identifier)를 통해 자원(Resource)을 명시하고,
+        2. HTTP Method(POST, GET, PUT, DELETE, PATCH 등)를 통해
+        3. 해당 자원(URI)에 대한 CRUD Operation을 적용하는 것
+    - **REST 구성요소**
+        1. **자원(Resource) : HTTP URI**
+        2. **자원에 대한 행위(Verb) : HTTP Method**
+        3. **자원에 대한 행위의 내용 (Representations) : HTTP Message Pay Load**
+    - **REST 특징**
+        1. Server-Client(서버-클라이언트 구조)
+        2. Stateless(무상태)
+        3. Cacheable(캐시 처리 가능)
+        4. Layered System(계층화)
+        5. Uniform Interface(인터페이스 일관성)
+- **ResponseBody란?**
+
+  ![img_6.png](img_6.png)
+
+  HTTP 프로토콜에 의해 서버와 클라이언트가 웹에서 비동기 통신을 할 때, 본문에 데이터를 담아서 보내야 한다. 클라이언트가 요청을 할 때는 requestBody, 응답을 할 때는 responseBody를 담아서 보내게 된다.
+
+  주로 JSON 형태의 데이터를 통해 데이터를 주고 받는데, 여기에서 `@RequestBody` 어노테이션은 HTTP 요청 바디를 자바 객체로 변환해주고 `@ResponseBody` 어노테이션은 자바 객체를 HTTP 응답 바디로 변환해주는 역할을 한다.
+
+- **결론) RestController의 역할**
+
+  `@Controller`와는 다르게 `@RestController`는 리턴값에 자동으로 `@ResponseBody`가 붙게되어 별도 어노테이션을 명시해주지 않아도 HTTP 응답데이터(body)에 자바 객체가 매핑되어 전달 된다. `@Controller`인 경우에 바디를 자바객체로 받기 위해서는 `@ResponseBody` 어노테이션을 반드시 명시해주어야한다.
+
+
+> **Reference**
+>
+>
+> [https://khj93.tistory.com/entry/네트워크-REST-API란-REST-RESTful이란](https://khj93.tistory.com/entry/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-REST-API%EB%9E%80-REST-RESTful%EC%9D%B4%EB%9E%80)
+>
+> https://cheershennah.tistory.com/179
+>
+> https://mangkyu.tistory.com/49
+>
+> https://dncjf64.tistory.com/288
+>
