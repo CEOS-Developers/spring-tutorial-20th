@@ -1029,4 +1029,89 @@ public class ReftFulController{
 > https://mangkyu.tistory.com/49
 >
 > https://dncjf64.tistory.com/288
+
+## 5️⃣ **단위 테스트와 통합 테스트 탐구**
+
+### **단위 테스트**
+
+- 단위테스트는 하나의 모듈을 기준으로 독립적으로 진행되는 가장 작은 단위의 테스트다.
+- 하나의 모듈이란 각 계층에서의 하나의 기능 또는 메소드로 이해할 수 있다.
+- 하나의 기능이 올바르게 동작하는지를 독립적으로 테스트하는 것이다.
+
+### **단위 테스트의 필요성**
+
+- 일반적으로 테스트 코드를 작성한다고 하면 거의 단위 테스트를 의미한다.
+- 통합 테스트는 실제 여러 컴포넌트들 간의 상호작용을 테스트 하기 때문에 모든 컴포넌트들이 구동된 상태에서 테스트를 하게 되므로, 캐시나 데이터베이스 등 다른 컴포넌트들과 실제 연결을 해야하고 어플리케이션을 구성하는 컴포넌트들이 많아 질수록 테스트를 위한 시간이 커진다.
+- 하지만, 단위 테스트는 테스트하고자 하는 부분만 독립적으로 테스트를 하기 때문에 해당 단위를 유지 보수 또는 리팩토링 하더라도 빠르게 문제 여부를 확인 할 수 있다.
+
+### **단위 테스트의 한계**
+
+- 일반적으로 어플리케이션은 하나의 기능을 처리하기 위해 다른 객체들과 데이터를 주고 받는 복잡한 통신이 일어난다.
+- 단위 테스트는 해당 기능에 대한 독립적인 테스트기 때문에 다른 객체와 데이터를 주고 받는 경우에 문제가 발생한다.
+- 그래서, 이 문제를 해결하기 위해 테스트하고자 하는 기능과 연관된 모듈에서 가짜 데이터, 정해진 반환값이 필요하다.
+- 즉 단위 테스트에서는, 테스트 하고자 하는 기능과 연관된 다른 모듈은 연결이 단절 되어야 비로소 독립적인 단위 테스트가 가능해 진다.
+
+### **단위 테스트의 특징**
+
+- 좋은 테스트 코드란, 계속해서 변하는 요구사항에 맞춰 변경된 코드는 버그의 가능성을 항상 내포하고 있으며, 이를 테스트 코드로 검증함으로써 해결할 수 있어야 한다.
+- 실제 코드가 변경되면 테스트 코드도 변경이 필요할 수 있으며, 테스트 코드 역시 가독성 있게 작성하여 일관된 규칙과 일관된 목적으로 테스트 코드를 작성 해야한다.
+- FIRST 규칙
+    - Fast : 테스트는 빠르게 동작하고 자주 가동 해야한다.
+    - Independent : 각각의 테스트는 독립적어이야 하며, 서로에 대한 의존성은 없어야 한다.
+    - Repeatable : 어느 환경에서도 반복이 가능해야 한다.
+    - Self-Validating : 테스트는 성공 또는 실패 값으로 결과를 내어 자체적으로 검증 되어야 한다.
+    - Timely : 테스트는 테스트 하려는 실제 코드를 구현하기 직전에 구현 해야한다.
+
+### **통합 테스트**
+
+- 모듈을 통합하는 과정에서 모듈 간 호환성을 확인하기 위한 테스트다.
+- 다른 객체들과 데이터를 주고받으며 복잡한 기능이 수행 될때, 연관된 객체들과 올바르게 동작하는지 검증하고자 하는 테스트다.
+- 독립적인 기능보다 전체적인 연관 기능과 웹 페이지로 부터 API를 호출하여 올바르게 동작하는지 확인한다.
+
+### 테스트 코드 뜯어보기
+
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+class HelloControllerTest {
+    @Autowired
+    private MockMvc mvc; //MockMvc를 주입받아서 사용할 준비를 한다
+
+    @DisplayName("DisplayName: 테스트 이름을 설정할 수 있습니다.")
+    @Test
+    public void getHello() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(
+                        content().string(equalTo("Greetings from Spring Boot!")));
+    }
+}
+```
+
+1. `@SpringBootTest`
+
+- `@SpringBootTest`는 Spring Boot의 통합 테스트를 위한 어노테이션이다. 이를 사용하면 실제 애플리케이션의 모든 빈이 로드된 상태로 테스트가 진행된다.
+- 이 어노테이션을 사용함으로써, 애플리케이션의 컨텍스트가 완전하게 로드된 상태에서 테스트할 수 있다. 즉, 실제 애플리케이션이 실행되는 환경과 유사한 상태에서 테스트가 진행된다. 이를 통해 애플리케이션의 전반적인 기능을 통합적으로 테스트할 수 있다.
+- **특징**: 이 어노테이션은 주로 통합 테스트에 사용되며, 일반적으로 컨트롤러, 서비스, 리포지토리 등 여러 계층을 함께 테스트하고자 할 때 유용하다.
+
+2. `@AutoConfigureMockMvc`
+
+- `@AutoConfigureMockMvc`는 MockMvc를 자동으로 설정해주는 어노테이션이다. MockMvc는 Spring MVC의 동작을 테스트할 때 사용되는 유틸리티로, 실제 서버를 띄우지 않고도 MVC 동작을 모킹(mocking)하여 테스트할 수 있게 한다.
+- MockMvc를 사용하면 HTTP 요청을 실제로 보내지 않고도, 컨트롤러 레벨에서의 요청 및 응답을 모의(mock)하여 테스트할 수 있다. 이 어노테이션을 통해 MockMvc 객체가 자동으로 설정되므로, 테스트 환경에서 이를 편리하게 사용할 수 있다.
+- 실제 서블릿 컨테이너를 띄우지 않고도 테스트를 할 수 있으므로, 테스트 실행 속도가 빠르고, 통합 테스트보다 단위 테스트나 컨트롤러 테스트에 주로 사용된다.
+
+```java
+mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+    .andExpect(status().isOk())
+    .andExpect(content().string(equalTo("Greetings from Spring Boot!")));
+```
+
+- `MockMvcRequestBuilders.get("/")`: 루트 경로(`"/"`)에 GET 요청을 보낸다.
+- `.accept(MediaType.APPLICATION_JSON)`: 응답은 JSON 형식으로 기대.
+- `.andExpect(status().isOk())`: HTTP 상태 코드가 200 OK인지 확인.
+- `.andExpect(content().string(equalTo("Greetings from Spring Boot!")))`: 응답 본문의 내용이 "Greetings from Spring Boot!"인지 확인.
+
+> Reference
+>
+>
+> [https://velog.io/@sussa3007/Spring-JUnit-Mockito-기반-Spring-단위-테스트-코드-작성](https://velog.io/@sussa3007/Spring-JUnit-Mockito-%EA%B8%B0%EB%B0%98-Spring-%EB%8B%A8%EC%9C%84-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C-%EC%9E%91%EC%84%B1)
 >
