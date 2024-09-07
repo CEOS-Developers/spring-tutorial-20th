@@ -124,7 +124,7 @@ public class Car {
    → setter 에서 tire 를 받아서 tire 필드를 설정
 
 
-**3. 필드 주입**
+  **3. 필드 주입**
 
 ```
     import org.springframework.beans.factory.annotation.Autowired;
