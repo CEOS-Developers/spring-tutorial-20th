@@ -121,7 +121,7 @@ public class Car {
     car.setTire(tire); // setter 주입
     ```
 
- → setter 에서 tire 를 받아서 tire 필드를 설정
+   → setter 에서 tire 를 받아서 tire 필드를 설정
 
 
 **3. 필드 주입**
