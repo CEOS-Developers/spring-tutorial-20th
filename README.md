@@ -487,6 +487,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
     
 
 **@ComponentScan 동작과정**
+
 ![image](https://github.com/user-attachments/assets/c64b429a-b060-4306-9005-4fb429a68a83)
 
 ClassPathBeanDefinitionScanner : 클래스 경로 내의 컴포넌트를 스캔하고 이를 Bean Definition객체로 변환하는 기능을 수행한다.
