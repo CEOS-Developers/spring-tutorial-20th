@@ -486,7 +486,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
     @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Ignore.class))
     
 
-   **@ComponentScan 동작과정**
+**@ComponentScan 동작과정**
 
 1. @Configuration 어노테이션 클래스를 파싱
 2.  ComponentScan 설정을 파싱한다.
