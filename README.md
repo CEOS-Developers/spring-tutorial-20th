@@ -462,7 +462,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
               @Filter(type = FilterType.상수, classes = 클래스명.class) })
     
 
-- excludeFilters : ConponentScan의 대상이지만, ComponentScan에서 제외시켜야 하는 경우에 사용
+   - excludeFilters : ConponentScan의 대상이지만, ComponentScan에서 제외시켜야 하는 경우에 사용
 
     ```
     @ComponentScan(
