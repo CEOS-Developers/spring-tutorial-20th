@@ -511,4 +511,4 @@ ClassPathBeanDefinitionScanner : 클래스 경로 내의 컴포넌트를 스캔�
    소프트웨어의 개별 구성 요소들이 모여 전체 시스템에서 올바르게 동작하는지 검증하는 테스트 방법이다. 주로 API 테스트 생각하면 되고, 데이터베이스나 외부 시스템과의 연동 등 실제 운영 환경에서 발생할 수 있는 다양한 상황을 모방해 테스트가 진행된다. 모듈이 서로 통합되어 상호작용할 때 발생할 수 있는 문제를 찾아내고 해결하는데 중점을 둔다.
 
 ---
-   Reference : [https://ittrue.tistory.com/214 ,](https://ittrue.tistory.com/214) https://mihee0703.tistory.com/207  ,  https://dev-coco.tistory.com/170  , https://zzang9ha.tistory.com/453
+   Reference : [https://ittrue.tistory.com/214 ,](https://ittrue.tistory.com/214) https://mihee0703.tistory.com/207  ,  https://dev-coco.tistory.com/170   ,  https://curiousjinan.tistory.com/entry/spring-boot-constructor-injection-part1-componentscan-analysis
