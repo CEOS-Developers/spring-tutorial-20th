@@ -18,6 +18,7 @@ public class Application {
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext context) {
 		return args -> {
+
 			System.out.println("Let's inspect the beans provided by Spring Boot:");
 
 			String[] beanNames = context.getBeanDefinitionNames();
@@ -25,6 +26,7 @@ public class Application {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
+
 		};
 	}
 
