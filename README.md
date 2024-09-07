@@ -156,10 +156,10 @@ public class Car {
     public class AmericaTire implements Tire {
         // ...
     }
-    
+``` 
 
    → Tire 구현체가 여러 개라면 어떤 빈을 주입받아야 하는지 알 수 없는 문제가 발생할 수 있는데, 이때 Qualifier를 사용해 빈을 지정해줄 수 있다
-```
+
 
 ---
 
