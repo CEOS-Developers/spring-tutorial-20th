@@ -15,6 +15,9 @@ CEOS 20th BE Study - Spring Tutorial
 
 
 - #### Spring IoC 컨테이너의 생명주기
+
+  `Resource 로딩 -> Bean 설정 -> Bean 인스턴스화 -> 의존성 주입 -> Bean 초기화 콜백 -> Bean 사용 -> Bean 소멸 콜백 -> Resource 해제`
+  
 1. **Resource 로딩** 
     
    IoC 컨테이너가 사용할 설정 파일을 메모리에 로드한다.
@@ -69,7 +72,7 @@ public class Car {
 모든 Car가 KoreaTire만 사용 가능, tire를 바꾸고 싶으면 Car 클래스의 생성자를 직접 수정해야 한다. 이를 해결하기 위해 의존성 주입을 사용한다.
 
 - 의존성 주입 방법 3가지
- 1. 생성자 주입
+ **1. 생성자 주입**
 
      ```
      public class Car {
@@ -95,7 +98,7 @@ public class Car {
 
 
 
-  2. Setter 주입
+  **2. Setter 주입**
 
     
     public class Car {
@@ -120,7 +123,7 @@ public class Car {
 → setter 에서 tire 를 받아서 tire 필드를 설정
 
 
-3. 필드 주입
+**3. 필드 주입**
 
     ```
     import org.springframework.beans.factory.annotation.Autowired;
@@ -498,7 +501,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
    소프트웨어의 개별 구성 요소 또는 모듈이 예상대로 작동하는지 검증하는 과정이다. 주로 메서드, 클래스와 같은 소프트웨어의 가장 작은 테스트 가능한 부분에 대한 테스트를 진행하기에 각 테스트는 독립적으로 실행되며 실행속도가 빠르다.
    즉, 개별 기능을 검증하는 것에 초점을 맞춘다.
 
-    ## 통합 테스트
+   ## 통합 테스트
 
    소프트웨어의 개별 구성 요소들이 모여 전체 시스템에서 올바르게 동작하는지 검증하는 테스트 방법이다. 주로 API 테스트 생각하면 되고, 데이터베이스나 외부 시스템과의 연동 등 실제 운영 환경에서 발생할 수 있는 다양한 상황을 모방해 테스트가 진행된다. 모듈이 서로 통합되어 상호작용할 때 발생할 수 있는 문제를 찾아내고 해결하는데 중점을 둔다.
 
