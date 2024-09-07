@@ -393,7 +393,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 
   → @Bean 객체가 싱글톤으로 등록됨을 보장받기 위해
 
-  → 싱글톤이란? : 어떠한 객체를 **단 한 번만 생성**하고, 생성된 객체를 **어디서든지 참조**할 수 있도록 하는 패턴
+  → 싱글톤이란? : 어떠한 객체를 단 한 번만 생성하고, 생성된 객체를 어디서든지 참조할 수 있도록 하는 패턴
 
 
    
@@ -432,7 +432,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 
    ![img_2.png](img_2.png)
 
-   스프링부트는 `@SpringBootApplication` 어노테이션이 선언된 클래스의 패키지 및 그 하위 패키지만 스캔하기 때문에 내가 생성하는 클래스들을 S`@SpringBootApplication` 어노테이션이 선언된 클래스가 속한 패키지 내에 있도록 해주어야 한다.
+   스프링부트는 `@SpringBootApplication` 어노테이션이 선언된 클래스의 패키지 및 그 하위 패키지만 스캔하기 때문에 내가 생성하는 클래스들을 `@SpringBootApplication` 어노테이션이 선언된 클래스가 속한 패키지 내에 있도록 해주어야 한다.
 
    ![img_3.png](img_3.png)
 
