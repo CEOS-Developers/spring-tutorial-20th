@@ -428,7 +428,7 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
 
    **@ComponentScan이란?**
 
-   @ComponentScan 어노테이션이 작성된 패키지 이하의 모든 클래스들을 순회하여 Bean을 찾아 Spring Container에 등록한다. 스프링부트에서는 @SpringBootApplication이 @ComponentScan을 들고있다.
+   @ComponentScan 어노테이션이 작성된 패키지 이하의 모든 클래스들을 순회하여 @Component 어노테이션이 붙은 클래스들을 스캔하여 빈을 찾아 Spring Container에 등록한다. 스프링부트에서는 @SpringBootApplication이 @ComponentScan을 들고있다.
 
    ![img_2.png](img_2.png)
 
@@ -487,12 +487,14 @@ OracleJdbcConnector, MariaDBJdbcConnector, SQLiteJdbcConnector와 같은 구현�
     
 
 **@ComponentScan 동작과정**
+![image](https://github.com/user-attachments/assets/c64b429a-b060-4306-9005-4fb429a68a83)
 
-1. @Configuration 어노테이션 클래스를 파싱
-2.  ComponentScan 설정을 파싱한다.
-3.  base-package 밑의 모든 클래스들을 로딩하여 component 후보인지 확인한다.
-4.  맞다면 빈 생성을 위한 정의 
-5.  이 정의를 토대로 빈을 생성하게 된다.
+ClassPathBeanDefinitionScanner : 클래스 경로 내의 컴포넌트를 스캔하고 이를 Bean Definition객체로 변환하는 기능을 수행한다.
+
+1. @ComponentScan 어노테이션에 지정된 basePackages 속성을 통해 어떤 패키지 하위에서 빈을 스캔할지 확인
+2.  base-package 하위의 모든 클래스들을 로딩하여 빈 후보인지 확인
+3.  빈 후보라면 Bean Definition(스프링 컨테이너가 해당 빈을 생성하고 관리하는데 필요한 모든 정보) 을 생성 
+4.  이 정를 토대로 빈을 생성하게 된다.
 
    ---
 
