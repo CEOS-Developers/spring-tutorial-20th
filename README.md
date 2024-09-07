@@ -72,7 +72,8 @@ public class Car {
 모든 Car가 KoreaTire만 사용 가능, tire를 바꾸고 싶으면 Car 클래스의 생성자를 직접 수정해야 한다. 이를 해결하기 위해 의존성 주입을 사용한다.
 
 - 의존성 주입 방법 3가지
- **1. 생성자 주입**
+
+  **1. 생성자 주입**
 
      ```
      public class Car {
