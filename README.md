@@ -101,7 +101,7 @@ public class Car {
 
   **2. Setter 주입**
 
-    ```
+```
     public class Car {
     
     	Tire tire;
@@ -111,22 +111,22 @@ public class Car {
     	}
     
     }
-    ```
+```
 
-    ```
+```
     Tire tire = new KoreaTire();
     
     Car car = new Car();
     
     car.setTire(tire); // setter 주입
-    ```
+```
 
    → setter 에서 tire 를 받아서 tire 필드를 설정
 
 
 **3. 필드 주입**
 
-    
+```
     import org.springframework.beans.factory.annotation.Autowired;
     
     public class Car {
@@ -136,9 +136,9 @@ public class Car {
     	Tire tire;
     
     }
-    
+```    
 
-    
+```    
     import org.springframework.stereotype.Component;
     
     @Component
@@ -146,9 +146,9 @@ public class Car {
     public class KoreaTire implements Tire {
         // ...
     }
-    
+```    
 
-    
+``` 
     import org.springframework.stereotype.Component;
     
     @Component
@@ -159,6 +159,7 @@ public class Car {
     
 
    → Tire 구현체가 여러 개라면 어떤 빈을 주입받아야 하는지 알 수 없는 문제가 발생할 수 있는데, 이때 Qualifier를 사용해 빈을 지정해줄 수 있다
+```
 
 ---
 
